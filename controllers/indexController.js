@@ -39,9 +39,9 @@ const postSignUpForm = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.json({
+      return res.status(500).json({
         title: "Sign up",
-        errors: errors.array(),
+        errors: errors.array().map((error) => error.msg),
       });
     }
     const user = await prisma.user.findUnique({
@@ -51,7 +51,7 @@ const postSignUpForm = [
     });
 
     if (user) {
-      return res.status(401).json({ errors: ["Account with username exists"] });
+      return res.status(404).json({ errors: ["Account with username exists"] });
     }
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
       // if err, do something
@@ -87,12 +87,12 @@ async function postLoginForm(req, res) {
     });
 
     if (!user) {
-      return res.status(401).json({ message: "Incorrect username" });
+      return res.status(404).json({ message: "Incorrect username" });
     }
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       // passwords do not match!
-      return res.status(401).json({ message: "Incorrect password" });
+      return res.status(404).json({ message: "Incorrect password" });
     }
     const token = jwt.sign(
       { userId: user.id, username: user.username, role: user.role },

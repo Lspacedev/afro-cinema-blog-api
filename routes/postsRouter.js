@@ -57,4 +57,11 @@ postsRouter.post(
   postsController.addComment
 );
 
+postsRouter.delete(
+  `/:postId/comments/:commentId`,
+  authenticate,
+  authorize("ADMIN"),
+  postsController.deleteComment
+);
+
 module.exports = postsRouter;

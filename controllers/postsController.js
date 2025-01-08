@@ -51,6 +51,9 @@ async function allAuthorPosts(req, res) {
       where: {
         authorId: user.id,
       },
+      include: {
+        comments: true,
+      },
     });
 
     res.send({ posts: posts });
@@ -243,6 +246,11 @@ async function deletePost(req, res) {
         id: Number(postId),
       },
     });
+    const commentdelete = await prisma.comment.deleteMany({
+      where: {
+        postId: Number(postId),
+      },
+    });
     if (post.imageUrl !== null) {
       const filename = post.imageUrl.substring(
         post.imageUrl.lastIndexOf("/") + 1
@@ -349,7 +357,20 @@ async function unpublishPost(req, res) {
       .json({ errors: ["An error occured while unpublishing post"] });
   }
 }
+async function deleteComment(req, res) {
+  const { postId, commentId } = req.params;
+  try {
+    const commentdelete = await prisma.comment.delete({
+      where: {
+        id: Number(commentId),
+      },
+    });
 
+    res.send({ message: "Comment deleted successfully" });
+  } catch (error) {
+    console.log(errors);
+  }
+}
 module.exports = {
   allAuthorPosts,
   createPost,
@@ -359,4 +380,5 @@ module.exports = {
   addComment,
   publishPost,
   unpublishPost,
+  deleteComment,
 };
