@@ -4,7 +4,7 @@ const { Router } = require("express");
 const indexController = require("../controllers/indexController");
 const indexRouter = Router();
 indexRouter.get("/test", (req, res) => {
-  console.log("testing");
+  res.json({ message: "alive" });
 });
 
 indexRouter.post("/sign-up", indexController.postSignUpForm);
