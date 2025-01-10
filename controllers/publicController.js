@@ -19,7 +19,7 @@ async function getPublishedPosts(req, res) {
   //return all published posts from all authors
   const posts = await prisma.post.findMany({
     where: {
-      published: false,
+      published: true,
     },
   });
 
