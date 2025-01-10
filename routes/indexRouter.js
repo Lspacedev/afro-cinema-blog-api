@@ -3,6 +3,9 @@ const { Router } = require("express");
 
 const indexController = require("../controllers/indexController");
 const indexRouter = Router();
+indexRouter.get("/test", (req, res) => {
+  console.log("testing");
+});
 
 indexRouter.post("/sign-up", indexController.postSignUpForm);
 
