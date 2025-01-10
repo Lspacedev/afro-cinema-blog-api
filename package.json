@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.20.0",
     "@quixo3/prisma-session-store": "^3.1.13",
     "@supabase/supabase-js": "^2.47.10",
     "base64-arraybuffer": "^1.0.2",
@@ -27,5 +26,9 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "uuid": "^11.0.4"
+  },
+  "devDependencies": {
+    "@prisma/client": "^6.2.1",
+    "prisma": "^6.2.1"
   }
 }
