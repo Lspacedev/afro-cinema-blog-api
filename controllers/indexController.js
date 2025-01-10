@@ -108,5 +108,36 @@ async function postLoginForm(req, res) {
     console.error(err);
   }
 }
+async function postGuestLoginForm(req, res) {
+  try {
+    let { username, password } = req.body;
+    const user = await prisma.user.findUnique({
+      where: {
+        username: "tshepo",
+      },
+    });
 
-module.exports = { postSignUpForm, postLoginForm };
+    if (!user) {
+      return res.status(401).json({ errors: ["Incorrect username"] });
+    }
+    const match = await bcrypt.compare("tshepo", user.password);
+    if (!match) {
+      // passwords do not match!
+      return res.status(401).json({ errors: ["Incorrect password"] });
+    }
+    const token = jwt.sign(
+      { userId: user.id, username: user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "3h" }
+    );
+
+    return res.status(200).json({
+      message: "Auth Passed",
+      userId: user.id,
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+module.exports = { postSignUpForm, postLoginForm, postGuestLoginForm };
