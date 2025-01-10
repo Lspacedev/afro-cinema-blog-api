@@ -106,6 +106,7 @@ const createPost = [
           title: title,
           text: text,
           imageUrl: postImageUrl,
+          published: false,
           author: {
             connect: {
               id: user.id,
